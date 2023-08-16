@@ -58,5 +58,12 @@ pipeline {
                 echo 'Deploying to production server...'
             }
         }
+
+                stage('Complete') {
+            steps {
+                echo 'Stage: Completed'
+                echo 'Completed...'
+            }
+        }
     }
 }
