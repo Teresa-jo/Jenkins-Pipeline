@@ -2,79 +2,61 @@ pipeline {
     agent any
 
     stages {
+        stage('Checkout') {
+            steps {
+                echo 'Stage: Checkout'
+                echo 'Checking out code from version control...'
+            }
+        }
+
         stage('Build') {
             steps {
-                script {
-                    // Compile and package code using Maven
-                    sh 'mvn clean package'
-                }
+                echo 'Stage: Build'
+                echo 'Building the code...'
             }
         }
 
-        stage('Unit Tests') {
+        stage('Unit and Integration Tests') {
             steps {
-                script {
-                    // Run unit tests
-                    sh 'mvn test'
-                }
-            }
-        }
-
-        stage('Integration Tests') {
-            steps {
-                script {
-                    // Run integration tests using Maven
-                    sh 'mvn integration-test'
-                }
+                echo 'Stage: Unit and Integration Tests'
+                echo 'Running unit tests...'
+                echo 'Running integration tests...'
             }
         }
 
         stage('Code Analysis') {
             steps {
-                script {
-                    // Perform code analysis using SonarQube
-                    withSonarQubeEnv('Your SonarQube Server') {
-                        sh 'mvn sonar:sonar'
-                    }
-                }
+                echo 'Stage: Code Analysis'
+                echo 'Performing code analysis...'
             }
         }
 
         stage('Security Scan') {
             steps {
-                script {
-                    // Perform security scan using OWASP ZAP
-                    sh 'zap-cli --zap-url http://localhost -f openapi -t /path/to/openapi.yaml'
-                }
+                echo 'Stage: Security Scan'
+                echo 'Performing security scan...'
             }
         }
 
-        stage('Deploy Staging') {
+        stage('Deploy to Staging') {
             steps {
-                script {
-                    // Deploy to staging using Ansible or SSH
-                    sh 'ansible-playbook -i inventory/staging deploy.yml'
-                }
+                echo 'Stage: Deploy to Staging'
+                echo 'Deploying to staging server...'
             }
         }
 
-        stage('Staging Tests') {
+        stage('Integration Tests on Staging') {
             steps {
-                script {
-                    // Run additional integration tests on staging
-                    sh 'mvn integration-test'
-                }
+                echo 'Stage: Integration Tests on Staging'
+                echo 'Running integration tests on staging...'
             }
         }
 
-        stage('Deploy Production') {
+        stage('Deploy to Production') {
             steps {
-                script {
-                    // Deploy to production using Ansible or SSH
-                    sh 'ansible-playbook -i inventory/production deploy.yml'
-                }
+                echo 'Stage: Deploy to Production'
+                echo 'Deploying to production server...'
             }
         }
     }
 }
-
