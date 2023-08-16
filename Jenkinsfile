@@ -4,52 +4,53 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh '/usr/local/Cellar/maven/3.9.4/libexec/bin/mvn clean package'
+                echo 'Building the code using Maven...'
+                sh 'mvn clean package' // Example: Using Maven as a build automation tool
             }
         }
 
         stage('Unit and Integration Tests') {
             steps {
-                sh '/usr/local/Cellar/maven/3.9.4/libexec/bin/mvn test'
-                sh '/usr/local/Cellar/maven/3.9.4/libexec/bin/mvn integration-test'
+                echo 'Running unit tests...'
+                sh 'mvn test' // Example: Running unit tests using Maven
                 
-                // Send email notification for test stage
-                emailext (
-                    to: 'recipient@example.com', // Add recipient email address here
-                    subject: "Unit and Integration Tests ${currentBuild.currentResult}",
-                    body: "Unit and Integration Tests stage status: ${currentBuild.currentResult}",
-                    attachmentsPattern: 'target/test-reports/*.xml' // Attach test reports
-                )
+                echo 'Running integration tests...'
+                sh 'mvn integration-test' // Example: Running integration tests using Maven
             }
         }
 
         stage('Code Analysis') {
             steps {
-                // Add steps to run code analysis tools (if applicable)
+                echo 'Running code analysis...'
+                sh 'mvn sonar:sonar' // Example: Using SonarQube for code analysis
             }
         }
 
         stage('Security Scan') {
             steps {
-                // Add steps to run security scan tools (if applicable)
+                echo 'Performing security scan...'
+                sh 'zap-cli --zap-url http://localhost -f openapi -t /path/to/openapi.yaml' // Example: Using OWASP ZAP for security scanning
             }
         }
 
         stage('Deploy to Staging') {
             steps {
-                // Add steps to deploy to staging server
+                echo 'Deploying to staging server...'
+                sh 'ansible-playbook -i inventory/staging deploy.yml' // Example: Using Ansible for deployment
             }
         }
 
         stage('Integration Tests on Staging') {
             steps {
-                // Add steps to run integration tests on staging environment
+                echo 'Running integration tests on staging environment...'
+                sh 'mvn integration-test' // Example: Running integration tests using Maven
             }
         }
 
         stage('Deploy to Production') {
             steps {
-                // Add steps to deploy to production server
+                echo 'Deploying to production server...'
+                sh 'ansible-playbook -i inventory/production deploy.yml' // Example: Using Ansible for deployment
             }
         }
     }
