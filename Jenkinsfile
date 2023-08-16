@@ -5,20 +5,26 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Use a build automation tool like Maven
+                    // Compile and package code using Maven
                     sh 'mvn clean package'
                 }
             }
         }
 
-        stage('Unit and Integration Tests') {
+        stage('Unit Tests') {
             steps {
                 script {
-                    // Run unit tests using JUnit
+                    // Run unit tests
                     sh 'mvn test'
+                }
+            }
+        }
 
-                    // Run integration tests using a separate command
-                    sh './run_integration_tests.sh'
+        stage('Integration Tests') {
+            steps {
+                script {
+                    // Run integration tests using Maven
+                    sh 'mvn integration-test'
                 }
             }
         }
@@ -26,8 +32,8 @@ pipeline {
         stage('Code Analysis') {
             steps {
                 script {
-                    // Integrate with a code analysis tool like SonarQube
-                    withSonarQubeEnv('SonarQubeServer') {
+                    // Perform code analysis using SonarQube
+                    withSonarQubeEnv('Your SonarQube Server') {
                         sh 'mvn sonar:sonar'
                     }
                 }
@@ -37,54 +43,38 @@ pipeline {
         stage('Security Scan') {
             steps {
                 script {
-                    // Integrate with a security scanning tool like OWASP Dependency-Check
-                    sh 'dependency-check.sh'
+                    // Perform security scan using OWASP ZAP
+                    sh 'zap-cli --zap-url http://localhost -f openapi -t /path/to/openapi.yaml'
                 }
             }
         }
 
-        stage('Deploy to Staging') {
+        stage('Deploy Staging') {
             steps {
                 script {
-                    // Deploy to staging environment using deployment tools
-                    sh 'aws ecs deploy-to-staging'
+                    // Deploy to staging using Ansible or SSH
+                    sh 'ansible-playbook -i inventory/staging deploy.yml'
                 }
             }
         }
 
-        stage('Integration Tests on Staging') {
+        stage('Staging Tests') {
             steps {
                 script {
-                    // Run integration tests on the staged environment
-                    sh './run_staging_integration_tests.sh'
+                    // Run additional integration tests on staging
+                    sh 'mvn integration-test'
                 }
             }
         }
 
-        stage('Deploy to Production') {
+        stage('Deploy Production') {
             steps {
                 script {
-                    // Deploy to production environment
-                    sh 'aws ecs deploy-to-production'
+                    // Deploy to production using Ansible or SSH
+                    sh 'ansible-playbook -i inventory/production deploy.yml'
                 }
             }
-        }
-    }
-
-    post {
-        failure {
-            emailext (
-                subject: "Pipeline Failed: ${currentBuild.fullDisplayName}",
-                body: "${currentBuild.fullDisplayName} has failed. Check the logs for more details.",
-                recipientProviders: [developers()]
-            )
-        }
-        success {
-            emailext (
-                subject: "Pipeline Successful: ${currentBuild.fullDisplayName}",
-                body: "${currentBuild.fullDisplayName} has completed successfully.",
-                recipientProviders: [developers()]
-            )
         }
     }
 }
+
