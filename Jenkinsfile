@@ -1,74 +1,65 @@
 pipeline {
     agent any
     environment {
-        // Define environment variables if needed
+        // Define global environment variables here
+        MAVEN_HOME = tool name: 'Maven', type: 'Maven'
     }
     stages {
         stage('Build') {
             steps {
                 script {
-                    // Clean and build the code using Gradle
-                    def gradleHome = tool name: 'Gradle', type: 'Tool'
-                    def gradleCMD = "${gradleHome}/bin/gradle"
-                    withGradle(installation: 'Gradle', gradle: gradleCMD) {
-                        sh "${gradleCMD} clean build"
-                    }
+                    // Use the MAVEN_HOME variable to run Maven build
+                    sh "${MAVEN_HOME}/bin/mvn clean install"
                 }
             }
         }
         stage('Unit and Integration Tests') {
             steps {
-                // Run your unit and integration tests here
-                sh './gradlew test'
+                // Run unit and integration tests here
+                // You can use tools like JUnit or TestNG for testing
             }
         }
         stage('Code Analysis') {
             steps {
-                // Integrate your code analysis tool (e.g., SonarQube, Checkstyle) here
-                sh './gradlew sonarqube'
+                // Integrate a code analysis tool (e.g., SonarQube)
+                // and run code analysis
             }
         }
         stage('Security Scan') {
             steps {
-                // Integrate your security scanning tool (e.g., OWASP ZAP, Nessus) here
-                sh 'security-scan-command'
+                // Perform a security scan using a tool (e.g., OWASP ZAP)
             }
         }
         stage('Deploy to Staging') {
             steps {
-                // Deploy the application to a staging environment (e.g., AWS EC2)
-                // You can use tools like AWS CLI or Jenkins plugins for this
-                sh 'deploy-to-staging-command'
+                // Deploy the application to a staging server (e.g., AWS EC2)
             }
         }
         stage('Integration Tests on Staging') {
             steps {
-                // Run integration tests on the staging environment here
-                sh 'integration-tests-command'
+                // Run integration tests on the staging environment
             }
         }
         stage('Deploy to Production') {
             steps {
-                // Deploy the application to a production environment (e.g., AWS EC2)
-                // You can use tools like AWS CLI or Jenkins plugins for this
-                sh 'deploy-to-production-command'
+                // Deploy the application to a production server (e.g., AWS EC2)
             }
         }
     }
     post {
-        failure {
-            // Define actions to be taken on pipeline failure (e.g., send notifications)
-            echo "Pipeline failed. Sending notifications..."
-            mail to: 'your-email@example.com',
-                 subject: 'Pipeline Failed',
-                 body: "The Jenkins pipeline for your project has failed."
-        }
         success {
-            // Define actions to be taken on pipeline success (e.g., send notifications)
-            echo "Pipeline succeeded. Sending notifications..."
-            mail to: 'your-email@example.com',
-                 subject: 'Pipeline Succeeded',
-                 body: "The Jenkins pipeline for your project has succeeded."
+            // Send success notification email with logs as attachment
+            emailext subject: 'Pipeline Success',
+                body: 'The Jenkins pipeline has completed successfully.',
+                to: 'your-email@example.com',
+                attachLog: true
+        }
+        failure {
+            // Send failure notification email with logs as attachment
+            emailext subject: 'Pipeline Failure',
+                body: 'The Jenkins pipeline has failed.',
+                to: 'your-email@example.com',
+                attachLog: true
         }
     }
 }
