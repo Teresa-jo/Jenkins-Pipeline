@@ -4,65 +4,78 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building the code...'
-                // Add your build commands here
+                // Build the code using a custom build script
+                sh './custom-build-script.sh' // Replace with the actual path to your custom build script
             }
         }
 
         stage('Unit and Integration Tests') {
             steps {
-                echo 'Running unit tests...'
-                // Add your unit test commands here
+                // Run unit tests
+                sh './run-unit-tests.sh' // Replace with the actual command to run unit tests
 
-                echo 'Running integration tests...'
-                // Add your integration test commands here
+                // Run integration tests
+                sh './run-integration-tests.sh' // Replace with the actual command to run integration tests
             }
         }
 
         stage('Code Analysis') {
             steps {
-                echo 'Running code analysis...'
-                // Add your code analysis commands here
+                // Integrate a code analysis tool (e.g., SonarQube)
+                // Replace with the actual command to run code analysis
+                sh './run-code-analysis.sh'
             }
         }
 
         stage('Security Scan') {
             steps {
-                echo 'Performing security scan...'
-                // Add your security scan commands here
+                // Perform a security scan using a security scanning tool
+                // Replace with the actual command to run the security scan
+                sh './run-security-scan.sh'
             }
         }
 
         stage('Deploy to Staging') {
             steps {
-                echo 'Deploying to staging server...'
-                // Add your deployment commands for staging here
+                // Deploy the application to a staging server (e.g., AWS EC2 instance)
+                // Replace with the actual deployment script or commands
+                sh './deploy-to-staging.sh'
             }
         }
 
         stage('Integration Tests on Staging') {
             steps {
-                echo 'Running integration tests on staging...'
-                // Add your integration test commands on staging here
+                // Run integration tests on the staging environment
+                // Replace with the actual command to run integration tests on staging
+                sh './run-integration-tests-on-staging.sh'
             }
         }
 
         stage('Deploy to Production') {
             steps {
-                echo 'Deploying to production server...'
-                // Add your deployment commands for production here
+                // Deploy the application to a production server (e.g., AWS EC2 instance)
+                // Replace with the actual deployment script or commands
+                sh './deploy-to-production.sh'
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline Successful'
-            // Send a notification email or perform other actions on success
+            // Send a notification email on success
+            emailext (
+                subject: "Pipeline Successful",
+                body: "The pipeline has completed successfully.",
+                to: "your-email@example.com"
+            )
         }
         failure {
-            echo 'Pipeline Failed'
-            // Send a notification email or perform other actions on failure
+            // Send a notification email on failure
+            emailext (
+                subject: "Pipeline Failed",
+                body: "The pipeline has failed. Please investigate.",
+                to: "your-email@example.com"
+            )
         }
     }
 }
