@@ -7,10 +7,11 @@ pipeline{
             }
             post{
                 success{
-                    emailext ( to: "ajojo1974@gmail.com",
+                    mail ( to: "ajojo1974@gmail.com",
                     subject: "Build Status Email",
                     body:"Pipeline ${currentBuild.fullDisplayName} completed with status: ${currentBuild.result}",
-                    attachLog: true)
+                    //attachLog: true
+                         )
 
                 }
             }
