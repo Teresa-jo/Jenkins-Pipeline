@@ -74,7 +74,7 @@ pipeline {
         success {
             echo 'Pipeline executed successfully!'
             emailext ( to: "ajojo1974@gmail.com",
-                    subject: "Build Status Email",
+                    subject: "Congras, you did it.",
                     body:"Pipeline ${currentBuild.fullDisplayName} completed with status: ${currentBuild.result}",
                     attachLog: true
                          )
@@ -83,7 +83,7 @@ pipeline {
         failure {
             echo 'Pipeline execution failed!'
             emailext ( to: "ajojo1974@gmail.com",
-                    subject: "Build Status Email",
+                    subject: "Sorry, please did it again",
                     body:"Pipeline ${currentBuild.fullDisplayName} completed with status: ${currentBuild.result}",
                     attachLog: true
                          )        }
