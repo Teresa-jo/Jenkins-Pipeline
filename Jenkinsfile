@@ -6,7 +6,6 @@ pipeline {
             steps {
                 echo 'Starting Build stage...'
                 echo 'Simulating code build...'
-                // Replace this with your actual build commands
                 echo 'Build completed.'
             }
         }
@@ -15,11 +14,9 @@ pipeline {
             steps {
                 echo 'Starting Unit and Integration Tests stage...'
                 echo 'Running unit tests...'
-                // Replace this with your actual unit test commands
                 echo 'Unit tests completed.'
 
                 echo 'Running integration tests...'
-                // Replace this with your actual integration test commands
                 echo 'Integration tests completed.'
             }
         }
@@ -28,7 +25,6 @@ pipeline {
             steps {
                 echo 'Starting Code Analysis stage...'
                 echo 'Running code analysis...'
-                // Replace this with your actual code analysis commands
                 echo 'Code analysis completed.'
             }
         }
@@ -37,7 +33,6 @@ pipeline {
             steps {
                 echo 'Starting Security Scan stage...'
                 echo 'Running security scan...'
-                // Replace this with your actual security scan commands
                 echo 'Security scan completed.'
             }
         }
@@ -46,7 +41,6 @@ pipeline {
             steps {
                 echo 'Starting Deploy to Staging stage...'
                 echo 'Deploying to staging environment...'
-                // Replace this with your actual deployment commands
                 echo 'Deployment to staging completed.'
             }
         }
@@ -55,7 +49,6 @@ pipeline {
             steps {
                 echo 'Starting Integration Tests on Staging stage...'
                 echo 'Running integration tests on staging...'
-                // Replace this with your actual integration test commands
                 echo 'Integration tests on staging completed.'
             }
         }
@@ -64,7 +57,6 @@ pipeline {
             steps {
                 echo 'Starting Deploy to Production stage...'
                 echo 'Deploying to production environment...'
-                // Replace this with your actual deployment commands
                 echo 'Deployment to production completed.'
             }
         }
