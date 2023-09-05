@@ -75,7 +75,7 @@ pipeline {
         failure {
             echo 'Pipeline execution failed!'
             emailext ( to: "ajojo1974@gmail.com",
-                    subject: "Sorry, please did it again",
+                    subject: "Sorry, Failed. please did it again",
                     body:"Pipeline ${currentBuild.fullDisplayName} completed with status: ${currentBuild.result}",
                     attachLog: true
                          )        }
